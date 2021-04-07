@@ -15,10 +15,13 @@ class App extends React.Component {
  
   unsubscribeFromAuth = null
 
-//esta es una suscripcion a firebase, cuando cambia algo en firebase
+// esta es una suscripcion a firebase, cuando cambia algo en firebase, el componente se actualiza
+// cuando se monta el componente se despacha la accion setCurrentUser al store
   componentDidMount () { 
     const { setCurrentUser } = this.props 
-
+    //onAuthStateChanged observa si hay cambios en el estado del sign in 
+    //SI HAY un usuario logueado lo escribe en la base de datos o lo devuelve si ya existia
+    // ademas disparo una accion, que lleva al store el usuario con la info del snapshot y un id 
     this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
       if (userAuth) {
         const userRef = await createUserProfileDocument(userAuth)
@@ -30,6 +33,8 @@ class App extends React.Component {
             })          
         })
       } 
+      //si NO HAY un usuario logueado,si lo que viene es un null,
+      //igual quiero setear mi usuario a null
       setCurrentUser(userAuth)
     })
   }
@@ -52,7 +57,7 @@ class App extends React.Component {
   }
 }
 
-const mapDispatchToProps = (dispatch) => ({
+const mapDispatchToProps = dispatch => ({
   setCurrentUser: user => dispatch(setCurrentUser(user))
 })
 

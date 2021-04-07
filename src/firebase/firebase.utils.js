@@ -14,13 +14,17 @@ const config = {
   !firebase.apps.length ?
   firebase.initializeApp(config) :
   firebase.app()
-  
+  // recibo un usuario autenticado, luiego lo busco con la propiedad uid en mi base de datos
+  // y le saco un SnapShot, para determinar si esta o no en la base de datos,
+  //si NO esta en la base de datos, lo escribo en la base de datos usando .set({})
+  // si ya existe lo devuelvo
   export const createUserProfileDocument = async (userAuth, additionalData) => {
 
     if(!userAuth) return
+    
     const userRef = firestore.doc(`users/$${userAuth.uid}`)
     const snapShot = await userRef.get()
-    
+ 
     if(!snapShot.exists) {
       const { displayName, email } = userAuth
       const createdAt = new Date()

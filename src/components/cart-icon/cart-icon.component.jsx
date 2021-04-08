@@ -1,5 +1,6 @@
 import React from 'react'
 import { connect } from 'react-redux'
+import { createStructuredSelector } from 'reselect'
 
 import { toggleCartHidden } from '../../redux/cart/cart.actions'
 import { selectCartItemsCount } from '../../redux/cart/cart.selectors'
@@ -19,8 +20,8 @@ export const CartIcon = ({ toggleCartHidden, itemCount }) => {
 }
 // esto es una especie de selector, con mapStateToProps estoy devolviendo una parte muy pequeña y especifica del estado
 //recibo todo el objeto cart, de ahi saco los cartitems, y de cada cartItem uso solo la propiedad qunatity para crear el itemCount
-const mapStateToProps = state => ({
-    itemCount: selectCartItemsCount(state)
+const mapStateToProps = createStructuredSelector({
+    itemCount: selectCartItemsCount
 })
 
 const mapDispatchToProps = dispatch => ({
